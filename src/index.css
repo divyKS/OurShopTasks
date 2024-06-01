@@ -21,3 +21,51 @@ body {
 table{
   display: contents;
 }
+
+.newUserForm{
+  border: 1px solid grey;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.newUserFormHeading{
+  display: flex;
+  justify-content: space-between;
+}
+.newUserFormHeading div {
+  margin: 0.5rem;
+  margin-left: 1rem;
+  font-size: 1.5rem;
+}
+
+.newUserFormHeading button {
+  margin: 0.5rem;
+  margin-right: 1rem;
+}
+
+
+.newUserFormContent {
+  font-size: 1.3rem;
+  margin: 1rem;
+  display: flex;
+}
+
+.newUserFormContent label {
+  margin-right: 1rem;
+}
+
+.newUserFormContent input {
+  width: 100%;
+}
+
+
+.errorMessage{
+  border: 2px solid saddlebrown;
+}
+
+.noErrorMessage{
+  position: absolute;
+  left: -9999999999999px;
+}

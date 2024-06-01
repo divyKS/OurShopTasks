@@ -13,13 +13,11 @@ const Note = ({ noteData }) => {
         <>
             <tr>
                 <td>{noteData.completed ? <span>Completed</span>: <span>Pending</span> }</td>
-                <td>{noteData.username}</td> {/* the username we put in in backend  */}
+                <td>{noteData.username}</td>{/* the username we put in in backend  */}
                 <td>{created}</td>
                 <td>{updated}</td>
                 <td>{noteData.title}</td>
-                <td>
-                    <button onClick={handleEdit}>Edit</button>
-                </td>
+                <td><button onClick={handleEdit}>Edit</button></td>
             </tr>
         </>
     )

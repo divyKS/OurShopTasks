@@ -8,7 +8,9 @@ const Welcome = () => {
       <p>This is your dashboards' welcome page after login</p>
       <p>{today}</p>
       <p><Link to='notes'>view notes</Link></p>
+      <p><Link to='notes/new'>add new node</Link></p>
       <p><Link to='users'>view user settings</Link></p>
+      <p><Link to='users/new'>add new user</Link></p>
     </>
   )
 }
