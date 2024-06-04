@@ -39,9 +39,9 @@ const EditUserForm = ({ user }) => {
 
 	useEffect(() => {
         if (user) {
-            setUsername(user.username || '');
-            setRoles(user.roles || []);
-            setActive(user.active || true);
+            setUsername(user.username);
+            setRoles(user.roles);
+            setActive(user.active);
         }
     }, [user]);
 

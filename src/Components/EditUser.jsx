@@ -9,7 +9,7 @@ import EditUserForm from './EditUserForm';
 
 const EditUser = () => {
 	const { userID } = useParams();
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
         const getUser = async () => {

@@ -10,7 +10,7 @@ const NotesList = () => {
 	const [notes, setNotes] = useState([]);
 
 	useEffect(() => {
-		if (data) {
+		if (Array.isArray(data)) {
 			const updatedData = data.reduce((accumulator, note) => {
 				const { _id, ...rest } = note;
 				const newNoteObject = {
@@ -23,6 +23,8 @@ const NotesList = () => {
 			setNotes(updatedData);
 		}
 	}, [data]);
+
+	
 
 	if (isLoading) {
 		return (
@@ -40,6 +42,10 @@ const NotesList = () => {
 				<p>{error?.response?.headers}</p>
 			</>
 		);
+	}
+	
+	if(!isLoading && !isError && isSuccess && notes.length == 0){
+		return <div>There are no notes at the moment.</div>
 	}
 
 	if (!isLoading && !isError && isSuccess) {
