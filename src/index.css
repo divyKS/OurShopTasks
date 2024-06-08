@@ -69,3 +69,12 @@ table{
   position: absolute;
   left: -9999999999999px;
 }
+
+.loginForm{
+  display: flex;
+  flex-direction: column;
+}
+
+.loginButton{
+  margin: 1rem;
+}

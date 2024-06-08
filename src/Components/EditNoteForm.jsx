@@ -77,7 +77,7 @@ const EditNoteForm = ({ note, users }) => {
         try{
 			setIsDeleteLoading(true);
 			const response = await axios.delete('http://localhost:3500/notes/',
-				{data: {"id": note._id}
+				{data: {"id": note._id}, 
 			});
 			console.log("deleted user data - " + JSON.stringify(response.data));
 			setIsDelError(false);
