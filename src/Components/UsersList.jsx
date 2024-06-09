@@ -35,9 +35,9 @@ const UsersList = () => {
 	if (!isLoading && isError) {
 		return (
 			<>
-				<p>{error?.response?.data}</p>
-				<p>{error?.response?.status}</p>
-				<p>{error?.response?.headers}</p>
+				<p>Error occurred</p>
+				<p>{(error.response.data.message)}</p>
+				<p>status code - {(error.response.status)}</p>
 			</>
 		);
 	}

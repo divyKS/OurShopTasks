@@ -10,7 +10,7 @@ const NotesList = () => {
 	const [notes, setNotes] = useState([]);
 
 	useEffect(() => {
-		if (Array.isArray(data)) {
+		if (Array.isArray(data) && data.length != 0) {
 			const updatedData = data.reduce((accumulator, note) => {
 				const { _id, ...rest } = note;
 				const newNoteObject = {
@@ -20,6 +20,8 @@ const NotesList = () => {
 				accumulator.push(newNoteObject);
 				return accumulator;
 			}, []);
+			console.log("useEffect reducer ran");
+			console.log(updatedData);
 			setNotes(updatedData);
 		}
 	}, [data]);
@@ -37,9 +39,9 @@ const NotesList = () => {
 	if (!isLoading && isError) {
 		return (
 			<>
-				<p>{error?.response?.data}</p>
-				<p>{error?.response?.status}</p>
-				<p>{error?.response?.headers}</p>
+				<p>There has been an error</p>
+				<p>{error.response.data.message}</p>
+				<p>{error.response.status}</p>
 			</>
 		);
 	}

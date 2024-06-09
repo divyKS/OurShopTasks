@@ -3,6 +3,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {useAuth} from '../Context/AuthContext.jsx';
 
 const NewNoteForm = ({ users }) => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -15,6 +16,8 @@ const NewNoteForm = ({ users }) => {
     const [title, setTitle] = useState('');
     const [text, setText] = useState('');
     const [userId, setUserId] = useState(users[0]._id);
+
+    const { authToken: accessToken } = useAuth();
 
 	useEffect(() => {
         if (isSuccess) {
@@ -34,7 +37,7 @@ const NewNoteForm = ({ users }) => {
 			try{
 				setIsLoading(true);
 				const postObject = { "user": userId, title, text };
-				const response = await axios.post("http://localhost:3500/notes", postObject);
+				const response = await axios.post("http://localhost:3500/notes", postObject, { headers: { Authorization: `Bearer ${accessToken}` }});
 				console.log(response.data);
 				setIsError(false);
                 setError(null);

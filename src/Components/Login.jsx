@@ -32,7 +32,7 @@ const Login = () => {
         try {
             setIsLoading(true);
             const response = await login({username, password});
-            console.log(response);
+            // console.log(response);
             setUsername('');
             setPassword('');
             navigate('/dashboard', {replace: true});

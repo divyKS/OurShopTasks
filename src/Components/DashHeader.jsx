@@ -16,7 +16,12 @@ const DashHeader = () => {
 	const handleOnLogout = async () => {
 		try{
 			const response = await logout();
-			console.log(response.data.message);
+			if(response.status == 204){
+				console.log("the cookie was already removed")
+			}
+			else{
+				console.log(response.data.message);
+			}
 			setIsSuccessLogout(true);
 		}
 		catch(err){

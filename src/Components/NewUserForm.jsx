@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ROLES }from '../config/roles.js';
 import axios from "axios";
+import {useAuth} from '../Context/AuthContext.jsx';
 
 const USER_REGEX = new RegExp("^[A-z ]{3,20}$")
 const PWD_REGEX = /^[A-z0-9!@#$%]{4,12}$/ 
@@ -15,6 +16,7 @@ const NewUserForm = () => {
     // addNewUser - function - to make db call with username, password, roles
 
 	const navigate = useNavigate();
+    const { authToken: accessToken } = useAuth();
 
 	const [username, setUsername] = useState('');
 	const [validUsername, setValidUsername] = useState(false);
@@ -61,7 +63,7 @@ const NewUserForm = () => {
             try{
                 setIsLoading(true);
                 const postObject = { username, password, roles };
-                const response = await axios.post('http://localhost:3500/users', postObject);
+                const response = await axios.post('http://localhost:3500/users', postObject, { headers: { Authorization: `Bearer ${accessToken}` }});
                 setIsError(false);
                 setError(null);
                 setIsSuccess(true);

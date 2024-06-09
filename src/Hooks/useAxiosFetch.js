@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useAuth } from "../Context/AuthContext";
 
 function useAxiosFetch(URL) {
     const [data, setData] = useState([])
@@ -8,6 +9,8 @@ function useAxiosFetch(URL) {
     const [error, setError] = useState(null)
     const [isSuccess, setIsSuccess] = useState(false)
 
+    const {authToken: accessToken} = useAuth();
+
     useEffect(() => {
         let isMounted = true
         const source = axios.CancelToken.source()
@@ -15,9 +18,11 @@ function useAxiosFetch(URL) {
         const getData = async () => {
             try{
                 setIsLoading(true);
-                const response = await axios.get(URL, {
-                    cancelToken: source.token
-                })
+                const axiosConfigObject = {
+                    cancelToken: source.token,
+                    headers: { Authorization: `Bearer ${accessToken}` }
+                };
+                const response = await axios.get(URL, axiosConfigObject);
                 if(isMounted){
                     setData(response.data)
                     setIsError(null)

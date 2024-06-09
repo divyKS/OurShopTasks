@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import {useAuth} from '../Context/AuthContext.jsx';
 
 const EditNoteForm = ({ note, users }) => {
     const [isUpdateLoading, setIsUpdateLoading] = useState(false);
@@ -19,6 +20,8 @@ const EditNoteForm = ({ note, users }) => {
     const [text, setText] = useState('');
     const [completed, setCompleted] = useState(false);
     const [userId, setUserId] = useState('');
+
+    const { authToken: accessToken } = useAuth();
 
     useEffect(() => {
         // note = {} will pass, but it has no properties, hence undefined
@@ -56,7 +59,7 @@ const EditNoteForm = ({ note, users }) => {
 		
             try{
                 setIsUpdateLoading(true);
-                const response = await axios.patch('http://localhost:3500/notes', patchObject);
+                const response = await axios.patch('http://localhost:3500/notes', patchObject, { headers: { Authorization: `Bearer ${accessToken}` }});
                 console.log("updated note data - " + JSON.stringify(response.data));
                 setIsUpdateError(false);
                 setUptError(null);
@@ -77,8 +80,14 @@ const EditNoteForm = ({ note, users }) => {
         try{
 			setIsDeleteLoading(true);
 			const response = await axios.delete('http://localhost:3500/notes/',
-				{data: {"id": note._id}, 
-			});
+				{  
+                    headers: { 
+                        Authorization: `Bearer ${accessToken}` 
+                    },
+                    data: {
+                        "id": note._id
+                    }
+                });
 			console.log("deleted user data - " + JSON.stringify(response.data));
 			setIsDelError(false);
 			setDelError(null);

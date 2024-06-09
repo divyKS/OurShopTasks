@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import EditNoteForm from './EditNoteForm';
+import {useAuth} from '../Context/AuthContext.jsx';
 
 const EditNote = () => {
     const {noteID} = useParams();
@@ -9,10 +10,12 @@ const EditNote = () => {
     const [note, setNote] = useState(null)
     const [users, setUsers] = useState([])
     
+    const { authToken: accessToken } = useAuth();
+    
     useEffect(() => {
         const getNote = async () => {
             try{
-                const response = await axios.get(`http://localhost:3500/notes/${noteID}`);
+                const response = await axios.get(`http://localhost:3500/notes/${noteID}`, { headers: { Authorization: `Bearer ${accessToken}`}});
                 // console.log(response);
                 setNote(response.data);
                 console.log(note);
@@ -32,7 +35,7 @@ const EditNote = () => {
     useEffect(() => {
         const getUsers = async () => {
             try{
-                const response = await axios.get(`http://localhost:3500/users`);
+                const response = await axios.get(`http://localhost:3500/users`, { headers: { Authorization: `Bearer ${accessToken}` }});
                 // console.log(response);
                 setUsers(response.data);
                 console.log(users)

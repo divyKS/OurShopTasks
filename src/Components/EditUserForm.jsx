@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { ROLES }from '../config/roles.js';
 import axios from "axios";
+import {useAuth} from '../Context/AuthContext.jsx';
 
 const USER_REGEX = new RegExp("^[A-z ]{3,20}$")
 const PWD_REGEX = /^[A-z0-9!@#$%]{4,12}$/ 
@@ -18,6 +19,7 @@ const EditUserForm = ({ user }) => {
     // addNewUser - function - to make db call with username, password, roles
 
 	const navigate = useNavigate();
+    const { authToken: accessToken } = useAuth();
 
 	const [username, setUsername] = useState('');
 	const [validUsername, setValidUsername] = useState(false);
@@ -89,7 +91,7 @@ const EditUserForm = ({ user }) => {
 
 		try{
 			setIsUpdateLoading(true);
-			const response = await axios.patch('http://localhost:3500/users', patchObject);
+			const response = await axios.patch('http://localhost:3500/users', patchObject, { headers: { Authorization: `Bearer ${accessToken}` }});
 			console.log("updated user data - " + JSON.stringify(response.data));
 			setIsUpdateError(false);
 			setUptError(null);
@@ -110,9 +112,15 @@ const EditUserForm = ({ user }) => {
 		
 		try{
 			setIsDeleteLoading(true);
-			const response = await axios.delete('http://localhost:3500/users/',
-				{data: {"id": user._id}
-			});
+            // the headers and data have to be inside same object, delete accepts only two parameters
+			const response = await axios.delete('http://localhost:3500/users/', {
+                headers: { 
+                    Authorization: `Bearer ${accessToken}` 
+                },
+                data: { 
+                    id: user._id 
+                }
+            });
 			console.log("deleted user data - " + JSON.stringify(response.data));
 			setIsDelError(false);
 			setDelError(null);
@@ -120,7 +128,7 @@ const EditUserForm = ({ user }) => {
 		}
 		catch(error){
 			setIsDelError(true);
-			setDelError(error.message);
+			setDelError(error.response.data.message);
 		}
 		finally{
 			setIsDeleteLoading(false);
