@@ -33,18 +33,19 @@ export const AuthProvider = ({ children }) => {
     const refresh = async () => {
         try {
             const response = await axios.get('http://localhost:3500/auth/refresh', {withCredentials: true});
-            setAuthToken(response.data.accessToken);
+            const newAccessToken = response.data.accessToken;
+            setAuthToken(newAccessToken);
             return response;
         } catch (e) {
             if (e.response.status == 403) {
                 console.log('your refresh token inside the cookie has also expired, you have to login again now');
             }
-            return e;
+            throw e;
 		}
     }
 
     return (
-        <AuthContext.Provider value={{ authToken, login, logout, refresh, refreshSuccess }}>
+        <AuthContext.Provider value={{ authToken, login, logout, refresh }}>
             {children}
         </AuthContext.Provider>
     );

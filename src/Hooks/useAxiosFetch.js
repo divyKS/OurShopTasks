@@ -9,7 +9,7 @@ const useAxiosFetch = (URL) => {
     const [isError, setIsError] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
 
-    const { authToken: accessToken, refresh, refreshSuccess } = useAuth();
+    const { authToken: accessToken, refresh } = useAuth();
 
     useEffect(() => {
         let isMounted = true
@@ -30,14 +30,11 @@ const useAxiosFetch = (URL) => {
             catch(e){
                 if(isMounted){
                     if(e.response.status == 403){
-                        console.log("your access token was expired, calling the function to refresh your AT if possible");
-                        
                         try {
-                            const response = await refresh();                            
-                            console.log("the AT was re-freshed successfully, now making request again to get data");
-                            if(refreshSuccess){
+                            const responseAT = await refresh();
+                            if(responseAT?.data?.accessToken){
                                 try{
-                                    const axiosConfigObject = { cancelToken: source.token, headers: { Authorization: `Bearer ${accessToken}` }};
+                                    const axiosConfigObject = { cancelToken: source.token, headers: { Authorization: `Bearer ${responseAT.data.accessToken}` }};
                                     const response = await axios.get(URL, axiosConfigObject);
                                     if(isMounted){
                                         setData(response.data)
@@ -48,43 +45,20 @@ const useAxiosFetch = (URL) => {
                                 }
                                 catch(e){
                                     if(isMounted){
-                                        console.log("there was some error after refreshing the AT")
+                                        console.log("GET /users error")
                                         setData([])
                                         setIsError(true)
                                         setError(e)
                                     }
                                 }
-                            }                            
+                            }
                         } catch (e) {
                             console.log(e)
-                            console.log("could not refresh the AT with the help of RT");
+                            console.log("refresh() error");
                             setData([])
                             setIsError(true)
                             setError(e)
                         }
-
-                        // const newAccessToken = await getNewAccessToken();
-                        // if(!rtIsError){
-                        //     console.log("got new access token from the /refresh" + newAccessToken);
-                        //     setAuthToken(newAccessToken);
-                        //     console.log(accessToken);
-                        //     setIsLoading(true);
-                        //     console.log("check if the AT has changed in the headers automatically from hook")
-                        //     console.log(axiosConfigObject.headers);
-                        //     const response = await axios.get(URL, axiosConfigObject);
-                        //     if(isMounted){
-                        //         setData(response.data)
-                        //         setIsError(null)
-                        //         setError(null)
-                        //         setIsSuccess(true)
-                        //     }
-                        // }
-                        // else{
-                        //     console.log("your both AT and RT have expired or are bad, please logout and login again");
-                        //     setData([]);
-                        //     setIsError(true);
-                        //     setError(rtError);
-                        // }
                     }
                     else{
                         setData([])
