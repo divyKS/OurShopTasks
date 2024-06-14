@@ -3,9 +3,7 @@ import useAxiosFetch from '../Hooks/useAxiosFetch';
 import User from './User';
 
 const UsersList = () => {
-	const { data, isLoading, isSuccess, isError, error } = useAxiosFetch(
-		'http://localhost:3500/users'
-	);
+	const { data, isLoading, isSuccess, isError, error } = useAxiosFetch('http://localhost:3500/users');
 
 	const [users, setUsers] = useState([]);
 
