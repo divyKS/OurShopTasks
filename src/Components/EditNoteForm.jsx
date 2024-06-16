@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {useAuth} from '../Context/AuthContext.jsx';
+import useAuthRoles from '../Hooks/useAuth';
 
 const EditNoteForm = ({ note, users }) => {
     const [isUpdateLoading, setIsUpdateLoading] = useState(false);
@@ -22,6 +23,8 @@ const EditNoteForm = ({ note, users }) => {
     const [userId, setUserId] = useState('');
 
     const { authToken: accessToken } = useAuth();
+
+	const { username, isManger, isAdmin } = useAuthRoles();
 
     useEffect(() => {
         // note = {} will pass, but it has no properties, hence undefined
@@ -116,7 +119,7 @@ const EditNoteForm = ({ note, users }) => {
                 <div className="newUserFormHeading">
                     <h2>Edit Note #{note.ticket}</h2>
                     <button onClick={handleOnSubmit} disabled={!canSave}>Update</button>
-                    <button onClick={handleOnDelete}>Delete</button>
+                    {(isManger || isAdmin) && <button onClick={handleOnDelete}>Delete</button>}
                 </div>
 
                 <div className='newUserFormContent'>

@@ -70,7 +70,7 @@ const NewUserForm = () => {
             }
             catch(error){
                 setIsError(true);
-                setError(error.message);
+                setError(error.response.data.message + " " + error.response.status);
             }
             finally{
                 setIsLoading(false);

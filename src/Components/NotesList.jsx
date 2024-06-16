@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import useAxiosFetch from '../Hooks/useAxiosFetch';
 import Note from './Note';
+import useAuthRoles from '../Hooks/useAuth';
 
 const NotesList = () => {
 	const { data, isLoading, isSuccess, isError, error } = useAxiosFetch(
@@ -8,6 +9,10 @@ const NotesList = () => {
 	);
 
 	const [notes, setNotes] = useState([]);
+	const [filteredNotes, setFilteredNotes] = useState([]);
+
+	const { username, isManger, isAdmin } = useAuthRoles();
+
 
 	useEffect(() => {
 		if (Array.isArray(data) && data.length != 0) {
@@ -20,12 +25,26 @@ const NotesList = () => {
 				accumulator.push(newNoteObject);
 				return accumulator;
 			}, []);
-			console.log("useEffect reducer ran");
 			console.log(updatedData);
 			setNotes(updatedData);
 		}
 	}, [data]);
 
+	useEffect(()=>{
+		// if the notes have arrived and the user is not admin nor manager, then it is employee so should see only his notes
+		if(notes && !isAdmin && !isManger){
+			const myNotes = notes.reduce((acc, note) => {
+				if(note.username == username){
+					acc.push(note);
+				}
+				return acc;
+			}, []);
+			setFilteredNotes(myNotes);
+		}
+		else{
+			setFilteredNotes(notes);
+		}
+	}, [notes]);
 	
 
 	if (isLoading) {
@@ -46,12 +65,12 @@ const NotesList = () => {
 		);
 	}
 	
-	if(!isLoading && !isError && isSuccess && notes.length == 0){
+	if(!isLoading && !isError && isSuccess && filteredNotes.length == 0){
 		return <div>There are no notes at the moment.</div>
 	}
 
 	if (!isLoading && !isError && isSuccess) {
-		const tableContent = notes.map((note) => (
+		const tableContent = filteredNotes.map((note) => (
 			<Note key={note.id} noteData={note}></Note>
 		));
 

@@ -1,24 +1,18 @@
 import React from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
+import useAuthRoles from '../Hooks/useAuth'
 
 const DashFooter = () => {
   
   const {pathname} = useLocation()
+  const {status, username} = useAuthRoles();
 
   return (
     <footer style={{border: "1px solid grey"}}>
       
-      <h2>dashboard footer</h2>
-      <p>Current User:</p>
-      <p>Current Status:</p>
-      <p>This current url will be used to display a home button to dashboard: {pathname}</p>
-      {pathname !== '/dashboard'? 
-        <p>
-          <Link to='/dashboard'>BACK</Link>
-        </p>
-        :
-        <></>
-      }
+      <p>Current User: {username}</p>
+      <p>Current Status: {status}</p>
+      { pathname !== '/dashboard'? <p><Link to='/dashboard'>let's do to dashboard</Link></p> : <p>you're on dashboard</p> }
         
     </footer>
   )

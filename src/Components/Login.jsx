@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext';
 
 const Login = () => {
@@ -13,6 +13,7 @@ const Login = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     const navigate = useNavigate();
+    const location = useLocation();
 
     const { login }  = useAuth();
 
@@ -35,6 +36,9 @@ const Login = () => {
             // console.log(response);
             setUsername('');
             setPassword('');
+            // console.log(location) nested kind of object which has state and then everything inside of the previous call
+            // const from = location.state?.from?.pathname || '/dashboard';
+            // navigate(from, {replace: true});
             navigate('/dashboard', {replace: true});
         } catch (err) {
             if(!err.response.status){

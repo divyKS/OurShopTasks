@@ -10,6 +10,8 @@ import EditUser from './Components/EditUser';
 import NewUserForm from './Components/NewUserForm';
 import EditNote from './Components/EditNote';
 import NewNote from './Components/NewNote';
+import RequireAuth from './Components/RequireAuth';
+import { ROLES } from './config/roles';
 
 const myRouter = createBrowserRouter(
 	createRoutesFromElements(
@@ -18,26 +20,34 @@ const myRouter = createBrowserRouter(
 
 			<Route path="/login" element={<Login />} />
 
-			<Route path="/dashboard" element={<DashLayout />}>
-				
-                <Route index element={<Welcome />} />
-				
-                <Route path="users">
-					{/* /dashboard/users */}
-					<Route index element={<UsersList />} />
-					{/* /dashboard/users/:id */}
-					<Route path=":userID" element={<EditUser />} />
-					{/* /dashboard/users/new */}
-					<Route path="new" element={<NewUserForm />} />
-				</Route>
-				
-                <Route path="notes">                    
-                    <Route index element={<NotesList />} />
-                    <Route path=':noteID' element={<EditNote />} />
-                    <Route path='new' element={<NewNote />} />
-                </Route> 
+			{/* this has not path  so it applies it logic to all the nested routes*/}
+			{/* <Route element={<RequireAuth allowedRoles={[...Object.values(ROLES)]}/>}> */}
 
-			</Route>
+				<Route path="/dashboard" element={<DashLayout />}>
+					
+					<Route index element={<Welcome />} />
+					
+					<Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.Manager]}/>}>
+						<Route path="users">
+							{/* /dashboard/users */}
+							<Route index element={<UsersList />} />
+							{/* /dashboard/users/:id */}
+							<Route path=":userID" element={<EditUser />} />
+							{/* /dashboard/users/new */}
+							<Route path="new" element={<NewUserForm />} />
+						</Route>
+					</Route>
+
+					
+					<Route path="notes">                    
+						<Route index element={<NotesList />} />
+						<Route path=':noteID' element={<EditNote />} />
+						<Route path='new' element={<NewNote />} />
+					</Route> 
+
+				</Route>
+
+			{/* </Route> */}
 		</>
 	)
 );
