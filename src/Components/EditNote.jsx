@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import EditNoteForm from './EditNoteForm';
 import {useAuth} from '../Context/AuthContext.jsx';
 import useAuthRoles from '../Hooks/useAuth.js';
-
+ 
 const EditNote = () => {
     const {noteID} = useParams();
     // can not put this state of object to be {} keep it null

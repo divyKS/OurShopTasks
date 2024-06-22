@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../Context/AuthContext'
-import useAuthRoles from '../Hooks/useAuth';
+// import { useAuth } from '../Context/AuthContext'
+// import useAuthRoles from '../Hooks/useAuth';
+import useAuth from '../Hooks/useAuth';
 
 const DashHeader = () => {
     const { pathname } = useLocation();
-	const { logout } = useAuth();
+	// const { logout } = useAuth();
+	const { setAuth, roles } = useAuth();
+
 	const [isSuccessLogout, setIsSuccessLogout] = useState(false);
 	const [isLogoutLoading, setIsLogoutLoading] = useState(false);
 	const [isError, setIsError] = useState(false);
@@ -13,7 +16,8 @@ const DashHeader = () => {
 
 	const navigate = useNavigate();
 	
-	const {isManager, isAdmin} = useAuthRoles()
+	// const {isManager, isAdmin} = useAuthRoles()
+	
 
 	useEffect(()=>{
 		if(isSuccessLogout){
