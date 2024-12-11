@@ -1,0 +1,21 @@
+
+# IMPLEMENTATION
+
+- 15s auto poll of notes, 60s auto poll of users, on tab change/out of focus (4th Chat)
+- mobile responsive, showing fewer columns in mobile
+- multiple tabs login? like whatsapp, use here?
+- deploy
+
+- all notes have been fetched, when we click on to edit some note, a new request must not go out to fetch these data again
+- prefetch on login the users and the notes and dont send another request when the links are clicked
+- useCallback & useMemo for the tables and the data, for the auto fetch, for re rendering only that note/user that was updated
+- table virtualization
+
+- fixing the useAxiosFetch hook to be able to fetch the different things from some shared code, too much duplication, diff default states etc.
+- too much code repetition of useEffect calls, mounting, cleanup functions, 
+
+# STUDY
+
+- difference in hooks/context, when to use what
+- useLocation()
+- try catch flow in react
